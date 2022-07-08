@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form onsubmit="save(event)">
+        <label>email</label>
+        <input type="email" id="email" name="email">
+        <label>choose expense amount</label>
+        <input type="number" id="amount" name="amo">
+        <label>choose description</label>
+        <input type="text" id="desc" name="des">
+        <label>choose a category</label>
+        <select id="category" name="cat">
+          <option>food</option>
+          <option>rent</option>
+          <option>education</option>
+          <option>other</option>
+        </select>
+        <button>submit</button>
+    </form>
+
+    <ul id="showuser">
+
+    </ul>
+<script>
+
+function save(event){
+    event.preventDefault();
+    const email=event.target.email.value
+    const amount=event.target.amo.value;
+    const desc=event.target.des.value
+    const category=event.target.cat.value
+
+    obj={
+        email:email,
+        amount:amount,
+        desc:desc,
+        category:category
+    }
+
+    // console.log(obj)
+    localStorage.setItem('obj.email',JSON.stringify(obj))
+    show(obj)
+      
+
+}
+
+
+
+window.addEventListener("DOMContentLoaded",()=> {
+    const localobj=localStorage;
+    const localkeys=Object.keys(localobj) 
+
+    for(var i=0;i<localkeys.length; i++){
+        const key=localkeys[i]
+        const userdstr= localobj[key];
+        const userdobj=JSON.parse(userdstr);
+        console.log(userdobj)
+        show(userdobj)
+    }
+   })
+
+function show(user){
+
+    
+    const parent= document.getElementById('showuser');
+    const  child=`<li id=${user.email}>${user.email}${user.amount} ${user.desc}${user.category} <button onclick=editdata('${user.email}','${user.amount}','${user.desc}',${user.category})> edit </button> 
+    <button onclick=deletdata('${user.email}')>delete</button></li>`
+    parent.innerHTML=parent.innerHTML+child;
+}
+
+function deletdata(email){
+    console.log(email)
+    localStorage.removeItem(email)
+    screenremover(email)
+}
+
+function screenremover(email){
+   
+    const parent=document.getElementById('showuser');
+    const deletechild=document.getElementById('email')
+    console.log("delete from screen",deletechild)
+    parent.removeChild(deletechild)
+
+}
+
+function editdata(email,amount, desc, category){ 
+       
+    console.log(email,amount)
+    document.getElementById('email')=email;
+    document.getElementById('amount')=amount;
+    document.getElementById('desc')=desc;
+    document.getElementById('category')=category;
+
+    deletdata(email)
+}
+
+
+
+
+
+
+</script>
+</body>
+</html>
