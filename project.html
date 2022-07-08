@@ -16,6 +16,7 @@
         <input type="text" id="desc" name="des">
         <label>choose a category</label>
         <select id="category" name="cat">
+            <option></option>
           <option>food</option>
           <option>rent</option>
           <option>education</option>
@@ -43,7 +44,7 @@ function save(event){
         category:category
     }
 
-    // console.log(obj)
+    console.log(obj)
     localStorage.setItem('obj.email',JSON.stringify(obj))
     show(obj)
       
@@ -52,18 +53,27 @@ function save(event){
 
 
 
-window.addEventListener("DOMContentLoaded",()=> {
-    const localobj=localStorage;
-    const localkeys=Object.keys(localobj) 
+// window.addEventListener("DOMContentLoaded",()=> {
+//     const localobj=localStorage;
+//     const localkeys=Object.keys(localobj) 
 
-    for(var i=0;i<localkeys.length; i++){
-        const key=localkeys[i]
-        const userdstr= localobj[key];
-        const userdobj=JSON.parse(userdstr);
-        console.log(userdobj)
-        show(userdobj)
-    }
-   })
+//     for(var i=0;i<localkeys.length; i++){
+//         const key=localkeys[i]
+//         const userdstr= localobj[key];
+//         const userdobj=JSON.parse(userdstr);
+//         console.log(userdobj)
+//         show(userdobj)
+//     }
+//    })
+
+
+window.addEventListener('DOMContentLoaded', (event) => {
+                Object.keys(localStorage).forEach(key => {
+                    const user = JSON.parse(localStorage.getItem(key))
+                    console.log("storage",user)
+                    show(user)
+                })
+            })
 
 function show(user){
 
@@ -97,7 +107,7 @@ function editdata(email,amount, desc, category){
     document.getElementById('desc')=desc;
     document.getElementById('category')=category;
 
-    deletdata(email)
+    deletedata(email)
 }
 
 
